@@ -9,15 +9,18 @@ cmake_minimum_required (VERSION 3.11)
 
 project (DirectXTex LANGUAGES CXX)
 
-option(DIRECTXTEX_TOOLS_ENABLED "Build DirectX Tex tools along with library" ON)
+option(DIRECTXTEX_TOOLS_ENABLED            "Build DirectX Tex tools along with library" ON)
+option(DIRECTXTEX_STANDALONE_BUILD_ENABLED "Build DirectX Tex build as a standalone project" ON)
 
-set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
-
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin/CMake")
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin/CMake")
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin/CMake")
+if (DIRECTXTEX_STANDALONE_ENABLED)
+    set(CMAKE_CXX_STANDARD 14)
+    set(CMAKE_CXX_STANDARD_REQUIRED ON)
+    set(CMAKE_CXX_EXTENSIONS OFF)
+    
+    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin/CMake")
+    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin/CMake")
+    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin/CMake")
+endif()
 
 add_library (${PROJECT_NAME} STATIC
     DirectXTex/BC.h
@@ -52,13 +55,14 @@ add_library (${PROJECT_NAME} STATIC
 )
 
 source_group(${PROJECT_NAME} REGULAR_EXPRESSION DirectXTex/*.*)
-
 target_include_directories(${PROJECT_NAME} PUBLIC DirectXTex)
 
-# Use max Warning Level 
-string(REPLACE "/W3" "/Wall" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
-string(REPLACE "/W3" "/Wall" CMAKE_CXX_FLAGS_DEBUG ${CMAKE_CXX_FLAGS_DEBUG})
-string(REPLACE "/W3" "/Wall" CMAKE_CXX_FLAGS_RELEASE ${CMAKE_CXX_FLAGS_RELEASE})
+if (DIRECTXTEX_STANDALONE_ENABLED)
+	# Use max Warning Level 
+	string(REPLACE "/W3" "/Wall" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
+	string(REPLACE "/W3" "/Wall" CMAKE_CXX_FLAGS_DEBUG ${CMAKE_CXX_FLAGS_DEBUG})
+	string(REPLACE "/W3" "/Wall" CMAKE_CXX_FLAGS_RELEASE ${CMAKE_CXX_FLAGS_RELEASE})
+endif()
 
 target_compile_options(${PROJECT_NAME} PRIVATE /fp:fast)
 
