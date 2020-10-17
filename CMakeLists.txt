@@ -84,6 +84,11 @@ add_custom_command(
 
 source_group(${PROJECT_NAME} REGULAR_EXPRESSION DirectXTex/*.*)
 
+target_precompile_headers(${PROJECT_NAME}
+    PRIVATE
+        DirectXTex/DirectXTexP.h
+)
+
 target_include_directories(${PROJECT_NAME} PUBLIC DirectXTex)
 
 if(MSVC AND DIRECTXTEX_STANDALONE_ENABLED)
@@ -119,7 +124,7 @@ if ( CMAKE_CXX_COMPILER_ID MATCHES "MSVC" )
 endif()
 
 if(WIN32)
-    target_compile_definitions(${PROJECT_NAME} PRIVATE _UNICODE UNICODE)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE _UNICODE UNICODE NOMINMAX WIN32_LEAN_AND_MEAN)
 
     if(BUILD_DX12 MATCHES ON)
         target_compile_definitions(${PROJECT_NAME} PRIVATE _WIN32_WINNT=0x0A00)
