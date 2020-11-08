@@ -86,11 +86,6 @@ add_custom_command(
 
 source_group(${PROJECT_NAME} REGULAR_EXPRESSION DirectXTex/*.*)
 
-target_precompile_headers(${PROJECT_NAME}
-    PRIVATE
-        DirectXTex/DirectXTexP.h
-)
-
 target_include_directories(${PROJECT_NAME} PUBLIC DirectXTex)
 
 if (${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.16")
