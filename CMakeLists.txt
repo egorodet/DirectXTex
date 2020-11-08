@@ -9,8 +9,9 @@ cmake_minimum_required (VERSION 3.11)
 
 project (DirectXTex LANGUAGES CXX)
 
-option(DIRECTXTEX_TOOLS_ENABLED            "Build DirectX Tex tools along with library" ON)
-option(DIRECTXTEX_STANDALONE_BUILD_ENABLED "Build DirectX Tex build as a standalone project" ON)
+option(DIRECTXTEX_TOOLS_ENABLED               "Build DirectX Tex tools along with library" ON)
+option(DIRECTXTEX_STANDALONE_BUILD_ENABLED    "Build DirectX Tex as a standalone project" ON)
+option(DIRECTXTEX_PRECOMPILED_HEADERS_ENABLED "Build DirectX Tex with precompiled headers" ON)
 
 # Includes the functions for creating Direct3D 11 resources at runtime
 option(BUILD_DX11 "Build with DirectX11 Runtime support" ON)
@@ -88,7 +89,8 @@ source_group(${PROJECT_NAME} REGULAR_EXPRESSION DirectXTex/*.*)
 
 target_include_directories(${PROJECT_NAME} PUBLIC DirectXTex)
 
-if (${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.16")
+if (DIRECTXTEX_PRECOMPILED_HEADERS_ENABLED AND
+    ${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.16")
     target_precompile_headers(${PROJECT_NAME} PRIVATE DirectXTex/DirectXTexP.h)
 endif()
 
